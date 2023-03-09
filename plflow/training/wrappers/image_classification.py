@@ -9,6 +9,7 @@ from plflow.config_parsing.parsers import parse_optimization_config
 from plflow.config_parsing import usr_config
 from torch import nn
 
+
 class ImageClassificationWrapper(pl.LightningModule):
     """
     This class wraps a nn.Module for image classification (e.g. ResNet) that is
@@ -16,7 +17,7 @@ class ImageClassificationWrapper(pl.LightningModule):
 
     Where to use it:
     ...
-    usr_config = get_usr_config_from_cmd_line(args)
+    usr_config = get_usr_config_from_cmd_line(args) # from /rex/de/my/config.yaml
     datamodule = parse_data_module(usr_config) # from parsers
     model = parse_model(usr_config)
     plmodule = ImgClassificationWrapper(model, usr_config, save_usr_config=True)
@@ -26,6 +27,13 @@ class ImageClassificationWrapper(pl.LightningModule):
 
     trainer.fit(plmodule, datamodule=datamodule) # train the model
     trainer.test(plmodule, datamodule=datamodule) # test the model
+
+    final output:
+
+    Test metric:           DataLoader 0
+    ----------------------------------------
+    accuracy:             0.824248294323424
+    sparsity:             0.341323423483242
     ...
     """
 
