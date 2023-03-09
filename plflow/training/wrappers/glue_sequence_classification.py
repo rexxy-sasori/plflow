@@ -4,8 +4,10 @@ import datasets
 import pytorch_lightning as pl
 import torch
 import transformers
+from torch import nn
 
 from plflow.analysis import get_sparsity
+from plflow.config_parsing import usr_config
 from plflow.config_parsing.parsers import parse_optimization_config
 from plflow.training.utils import run_glue_benchmark
 
@@ -33,7 +35,9 @@ class GlueSequenceClassificationWrapper(pl.LightningModule):
     """
 
     def __init__(
-            self, model, usr_config,
+            self,
+            model: nn.Module,
+            usr_config: usr_config.UsrConfigs,
             task_name: str, num_labels: int,
             eval_splits: Optional[int],
             save_usr_config: bool = False

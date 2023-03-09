@@ -1,6 +1,7 @@
+from typing import Optional, Any
+
 import pl_bolts.datamodules as dms
 import torchvision
-
 from pl_bolts.transforms.dataset_normalizations import cifar10_normalization, imagenet_normalization
 
 from plflow.data.datamodules.cifar import CIFARDataModule
@@ -10,14 +11,24 @@ from plflow.data.transforms.cifar100 import cifar100_normalization
 from plflow.data.transforms.rgb2tensor import RGBToTensor
 
 
-def cifar10_datamodule(num_worker, batch_size, data_dir, drop_last):
+def cifar10_datamodule(
+        num_worker: int,
+        batch_size: int,
+        data_dir: str,
+        drop_last: bool
+):
     return CIFARDataModule(
         num_worker, batch_size, data_dir, drop_last,
         cls=torchvision.datasets.CIFAR10, normalization=cifar10_normalization
     )
 
 
-def cifar100_datamodule(num_worker, batch_size, data_dir, drop_last):
+def cifar100_datamodule(
+        num_worker: int,
+        batch_size: int,
+        data_dir: str,
+        drop_last: bool
+):
     return CIFARDataModule(
         num_worker, batch_size, data_dir, drop_last,
         cls=torchvision.datasets.CIFAR100, normalization=cifar100_normalization
@@ -42,8 +53,24 @@ def glue_datamodule(
     )
 
 
-def imgnet_datamodule(*args, **kwargs):
-    dm = dms.ImagenetDataModule(*args, **kwargs)
+def imgnet_datamodule(
+        data_dir: str,
+        meta_dir: Optional[str] = None,
+        num_imgs_per_val_class: int = 50,
+        image_size: int = 224,
+        num_workers: int = 0,
+        batch_size: int = 32,
+        shuffle: bool = True,
+        pin_memory: bool = True,
+        drop_last: bool = False,
+        *args: Any,
+        **kwargs: Any
+):
+    dm = dms.ImagenetDataModule(
+        data_dir, meta_dir, num_imgs_per_val_class, image_size,
+        num_workers, batch_size, shuffle, pin_memory, drop_last,
+        *args, **kwargs
+    )
 
     dm.prepare_data()
     dm.setup()
@@ -78,8 +105,24 @@ def imgnet_datamodule(*args, **kwargs):
     return dm
 
 
-def tar_imgnet_datamodule(*args, **kwargs):
-    dm = TarImgNetDataModule(*args, **kwargs)
+def tar_imgnet_datamodule(
+        train_tar_path: Any,
+        val_tar_path: Any,
+        num_imgs_per_val_class: int = 50,
+        image_size: int = 224,
+        num_workers: int = 0,
+        batch_size: int = 32,
+        shuffle: bool = True,
+        pin_memory: bool = True,
+        drop_last: bool = False,
+        *args: Any,
+        **kwargs: Any
+):
+    dm = TarImgNetDataModule(
+        train_tar_path, val_tar_path, num_imgs_per_val_class,
+        image_size, num_workers, batch_size, shuffle, pin_memory, drop_last,
+        *args, **kwargs
+    )
     dm.prepare_data()
     dm.setup()
 

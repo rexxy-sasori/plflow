@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Callable
 
 import pytorch_lightning as pl
 import torch
@@ -9,7 +9,15 @@ from plflow.data.transforms.rgb2tensor import RGBToTensor
 
 
 class CIFARDataModule(pl.LightningDataModule):
-    def __init__(self, num_worker, batch_size, data_dir, drop_last, cls, normalization):
+    def __init__(
+            self,
+            num_worker: int,
+            batch_size: int,
+            data_dir: str,
+            drop_last: bool,
+            cls: Callable,
+            normalization: Callable
+    ):
         super(CIFARDataModule, self).__init__()
         self.num_worker = num_worker
         self.batch_size = batch_size

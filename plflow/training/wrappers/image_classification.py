@@ -6,7 +6,8 @@ import torch.nn.functional as F
 import torchmetrics
 
 from plflow.config_parsing.parsers import parse_optimization_config
-
+from plflow.config_parsing import usr_config
+from torch import nn
 
 class ImageClassificationWrapper(pl.LightningModule):
     """
@@ -28,7 +29,12 @@ class ImageClassificationWrapper(pl.LightningModule):
     ...
     """
 
-    def __init__(self, model, usr_config, save_usr_config=False):
+    def __init__(
+            self,
+            model: nn.Module,
+            usr_config: usr_config.UsrConfigs,
+            save_usr_config=False
+    ):
         super(ImageClassificationWrapper, self).__init__()
         self.module = model
         self.usr_config = usr_config
