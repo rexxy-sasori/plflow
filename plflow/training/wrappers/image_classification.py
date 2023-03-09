@@ -15,8 +15,8 @@ class ImageClassificationWrapper(pl.LightningModule):
     This class wraps a nn.Module for image classification (e.g. ResNet) that is
     later to be used for training
 
-    Where to use it:
-    ...
+    How to use it:
+
     usr_config = get_usr_config_from_cmd_line(args) # from /rex/de/my/config.yaml
     datamodule = parse_data_module(usr_config) # from parsers
     model = parse_model(usr_config)
@@ -34,7 +34,7 @@ class ImageClassificationWrapper(pl.LightningModule):
     ----------------------------------------
     accuracy:             0.824248294323424
     sparsity:             0.341323423483242
-    ...
+
     """
 
     def __init__(
