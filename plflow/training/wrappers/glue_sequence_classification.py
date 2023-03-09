@@ -22,7 +22,7 @@ class GlueSequenceClassificationWrapper(pl.LightningModule):
     usr_config = get_usr_config_from_cmd_line(args)
     datamodule = parse_data_module(usr_config) # from parsers
     model = parse_model(usr_config)
-    plmodule = GlueSequenceClassificationWrapper(model, usr_config, save_usr_config=True)
+    plmodule = GlueSequenceClassificationWrapper(model, usr_config, ..., save_usr_config=True)
 
     trainer = pl.Trainer(logger, callbacks, strategy)
     # check pytorch lightning for what logger, callbacks, and strategy are
@@ -38,7 +38,8 @@ class GlueSequenceClassificationWrapper(pl.LightningModule):
             self,
             model: nn.Module,
             usr_config: usr_config.UsrConfigs,
-            task_name: str, num_labels: int,
+            task_name: str,
+            num_labels: int,
             eval_splits: Optional[int],
             save_usr_config: bool = False
     ):
