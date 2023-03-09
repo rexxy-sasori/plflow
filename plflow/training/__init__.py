@@ -39,7 +39,7 @@ def execute(
             plmodule.load_state_dict(ckpt['state_dict'])
         except Exception:
             msg = """ Error encountered, probably mismatched keys while 
-            loading for pl-wrapped model, retrying with module removed
+            loading for pl-wrapped model, retrying with module. prefix removed
             """
             debug_msg(msg, verbose)
             plmodule.module.load_state_dict(ckpt['state_dict'])
@@ -50,4 +50,5 @@ def execute(
         debug_msg(f'ckpt not found at {ckpt_path}, start train the model', verbose)
         trainer.fit(model=plmodule, datamodule=datamodule)
     finally:
+        debug_msg("Training has finished. Starting final testing", verbose)
         trainer.test(model=plmodule, datamodule=datamodule)
