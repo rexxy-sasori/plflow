@@ -5,7 +5,7 @@ import numpy as np
 import pytorch_lightning.strategies as strategies
 from pytorch_lightning.loggers import CSVLogger
 from torch import optim
-
+from torch import nn
 import plflow.utils
 from plflow.config.usr_config import EmptyConfig
 from plflow.prune.utils import get_block_search_space_model
@@ -13,7 +13,9 @@ from plflow.utils import none_check, get_wd_nwd_params, attr_check, is_linear_tr
 
 
 def parse_optimization_config(
-        model, optimizer_config, lr_scheduler_config,
+        model: nn.Module,
+        optimizer_config: plflow.config.usr_config.UsrConfigs,
+        lr_scheduler_config: plflow.config.usr_config.UsrConfigs,
         optimlib=optim, lr_schedulerlib=optim.lr_scheduler
 ):
     if isinstance(optimizer_config, dict):
@@ -46,21 +48,17 @@ def parse_optimization_config(
         return optimizer, lr_scheduler
 
 
-def parse_model(usr_config, modellib):
+def parse_model(usr_config: plflow.config.usr_config.UsrConfigs, modellib):
     libs = [modellib] if not isinstance(modellib, list) else modellib
     return _parse_model_or_data_module(usr_config, libs, 'module')
 
 
-def parse_datamodule(usr_config, datalib):
+def parse_datamodule(usr_config: plflow.config.usr_config.UsrConfigs, datalib):
     libs = [datalib] if not isinstance(datalib, list) else datalib
     return _parse_model_or_data_module(usr_config, libs, 'data')
 
 
-def _parse_model_or_data_module(
-        config: plflow.config.usr_config.UsrConfigs,
-        libs: List,
-        field: str
-):
+def _parse_model_or_data_module(config: plflow.config.usr_config.UsrConfigs, libs: List, field: str):
     field_config = getattr(config, field)
     if isinstance(field_config, EmptyConfig) or field_config is None:
         raise ValueError(f"{config} has no {field} field")
