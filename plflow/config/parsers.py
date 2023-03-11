@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import numpy as np
-from plflow.prune.partition import get_block_search_space_model
+from plflow.prune.utils import get_block_search_space_model
 from pytorch_lightning.loggers import CSVLogger
 from torch import optim
 
