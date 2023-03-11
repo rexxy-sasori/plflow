@@ -1,12 +1,14 @@
+from typing import List
 from datetime import datetime
 
 import numpy as np
-from plflow.prune.utils import get_block_search_space_model
+import pytorch_lightning.strategies as strategies
 from pytorch_lightning.loggers import CSVLogger
 from torch import optim
 
 import plflow.utils
 from plflow.config.usr_config import EmptyConfig
+from plflow.prune.utils import get_block_search_space_model
 from plflow.utils import none_check, get_wd_nwd_params, attr_check, is_linear_transform_layer
 
 
@@ -45,15 +47,53 @@ def parse_optimization_config(
 
 
 def parse_model(usr_config, modellib):
-    model_cls = getattr(modellib, usr_config.module.name)
-    model_obj = model_cls(**usr_config.module.init_args.__dict__)
-    return model_obj
+    libs = [modellib] if not isinstance(modellib, list) else modellib
+    return _parse_model_or_data_module(usr_config, libs, 'module')
 
 
 def parse_datamodule(usr_config, datalib):
-    dm_initializer = getattr(datalib, usr_config.data.name)
-    dm = dm_initializer(**usr_config.data.init_args.__dict__)
-    return dm
+    libs = [datalib] if not isinstance(datalib, list) else datalib
+    return _parse_model_or_data_module(usr_config, libs, 'data')
+
+
+def _parse_model_or_data_module(
+        config: plflow.config.usr_config.UsrConfigs,
+        libs: List,
+        field: str
+):
+    field_config = getattr(config, field)
+    if isinstance(field_config, EmptyConfig) or field_config is None:
+        raise ValueError(f"{config} has no {field} field")
+
+    if not hasattr(field_config, 'name'):
+        raise ValueError(f"{field_config} needs to have a field called name")
+
+    clsname = field_config.name
+    initializer = None
+    for lib in libs:
+        try:
+            """
+            Break on the first lib that has clsname and is not None
+            """
+            initializer = getattr(lib, clsname)
+            if initializer is not None:
+                break
+        except AttributeError:
+            """
+            Skip if lib does not have clsname
+            """
+            continue
+
+    if initializer is None:
+        for lib in libs:
+            print(lib)
+
+        raise ValueError(
+            f"No target in the following list has the module {clsname}. Check your spelling"
+        )
+
+    instance = initializer(**field_config.init_args.__dict__)
+    return instance
 
 
 def parse_logging(logger_cls=CSVLogger, usr_config=None, use_time_code=False, name=None, save_dir=None):
@@ -114,7 +154,6 @@ def parse_callbacks(logger, usr_config, callbacks_modules, persist_ckpt=True):
 
 
 def parse_strategy(strategy_config):
-    import pytorch_lightning.strategies as strategies
     if isinstance(strategy_config, EmptyConfig):
         return None
 
