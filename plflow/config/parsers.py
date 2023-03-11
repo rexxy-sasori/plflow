@@ -6,7 +6,7 @@ from pytorch_lightning.loggers import CSVLogger
 from torch import optim
 
 import plflow.utils
-from plflow.config_parsing.usr_config import EmptyConfig
+from plflow.config.usr_config import EmptyConfig
 from plflow.utils import none_check, get_wd_nwd_params, attr_check, is_linear_transform_layer
 
 

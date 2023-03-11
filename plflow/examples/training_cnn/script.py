@@ -2,11 +2,11 @@ import argparse
 
 import pytorch_lightning as pl
 
-import plflow.config_parsing.parsers as config_parsers
+import plflow.config.parsers as config_parsers
 import plflow.data
 import plflow.models
 import plflow.training
-from plflow.config_parsing.usr_config import get_usr_config
+from plflow.config.usr_config import get_usr_config
 from plflow.training.wrappers import ImageClassificationWrapper
 
 if __name__ == '__main__':

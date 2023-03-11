@@ -7,8 +7,8 @@ import transformers
 from torch import nn
 
 from plflow.analysis import get_sparsity
-from plflow.config_parsing import usr_config
-from plflow.config_parsing.parsers import parse_optimization_config
+from plflow.config import usr_config
+from plflow.config.parsers import parse_optimization_config
 from plflow.training.utils import run_glue_benchmark
 
 

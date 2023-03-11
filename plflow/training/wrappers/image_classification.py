@@ -5,8 +5,8 @@ import torch
 import torch.nn.functional as F
 import torchmetrics
 
-from plflow.config_parsing.parsers import parse_optimization_config
-from plflow.config_parsing import usr_config
+from plflow.config.parsers import parse_optimization_config
+from plflow.config import usr_config
 from torch import nn
 
 
