@@ -98,6 +98,9 @@ class GlueSequenceClassificationWrapper(pl.LightningModule):
     def validation_epoch_end(self, outputs):
         run_glue_benchmark(self, outputs, "{}_{}", "val_loss_{}", "val_loss")
 
+    def test_epoch_end(self, outputs):
+        run_glue_benchmark(self, outputs, "{}_{}", "test_loss_{}", "test_loss")
+
     def configure_optimizers(self):
         optimizer, lr_scheduler = parse_optimization_config(
             model=self.module, optimizer_config=self.optimizer_config,

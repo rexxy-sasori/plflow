@@ -19,7 +19,11 @@ def execute(
         strategy: [str, pl_strategies.Strategy],
         callbacks: List[pl.callbacks.Callback],
 
-        verbose: bool,
+        precision: int = 32,
+        amp_backend: str = 'native',
+        amp_level: str = None,
+
+        verbose: bool = True,
 ):
     trainer = pl.Trainer(
         max_epochs=num_epochs,
@@ -30,6 +34,9 @@ def execute(
         logger=logger,
         strategy=strategy,
         callbacks=callbacks,
+        precision=precision,
+        amp_backend=amp_backend,
+        amp_level=None if amp_backend == 'native' else amp_level,
     )
 
     try:
