@@ -5,7 +5,7 @@ import torch
 from pytorch_lightning import loggers as pl_loggers
 from pytorch_lightning import strategies as pl_strategies
 
-from plflow.utils import debug_msg
+from plflow.utils import debug_msg, callback_exists
 
 
 def execute(
@@ -25,6 +25,8 @@ def execute(
 
         verbose: bool = True,
 ):
+    enable_checkpointing = callback_exists(callbacks, pl.callbacks.ModelCheckpoint)
+
     trainer = pl.Trainer(
         max_epochs=num_epochs,
         accelerator="auto",
@@ -37,6 +39,7 @@ def execute(
         precision=precision,
         amp_backend=amp_backend,
         amp_level=None if amp_backend == 'native' else amp_level,
+        enable_checkpointing=enable_checkpointing
     )
 
     try:
