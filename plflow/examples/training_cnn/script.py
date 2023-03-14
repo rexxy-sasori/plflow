@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     logger = config_parsers.parse_logging(
         usr_config=usr_config,
-        use_time_code=usr_config.trainer.use_time_code,
+        use_time_code=usr_config.trainer.init_args.use_time_code,
         name='img_classification'
     )
 

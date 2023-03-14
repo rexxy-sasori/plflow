@@ -1,7 +1,7 @@
 seed: 12341
 trainer:
   init_args:
-    use_time_code: true
+    use_time_code: false
     persist_ckpt: false
     training_strategy:
       name: SingleDeviceStrategy

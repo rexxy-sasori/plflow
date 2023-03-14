@@ -62,3 +62,5 @@ def execute(
     finally:
         debug_msg("Training has finished. Starting final testing", verbose)
         trainer.test(model=plmodule, datamodule=datamodule)
+
+    return trainer
