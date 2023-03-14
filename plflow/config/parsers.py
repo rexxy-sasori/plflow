@@ -29,7 +29,7 @@ def parse_optimization_config(
         lr_scheduler = LRScheCls(optimizer, **lr_scheduler_config['init_args'])
     else:
         weight_decay_val = attr_check(optimizer_config.init_args, 'weight_decay', 0)
-        reg_bn = attr_check(optimizer_config.init_args, 'reg_bn', False)
+        reg_bn = attr_check(optimizer_config, 'reg_bn', False)
         params = model.parameters() if reg_bn else get_wd_nwd_params(model, weight_decay=weight_decay_val)
 
         OptimCls = getattr(optimlib, optimizer_config.name)

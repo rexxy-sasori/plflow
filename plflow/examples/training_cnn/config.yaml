@@ -27,6 +27,7 @@ optimizer:
     lr: 0.1
     weight_decay: 5e-5
     momentum: 0.9
+    reg_bn: false
 lr_scheduler:
   name: MultiStepLR
   init_args:

@@ -17,11 +17,12 @@ def pipeline(trial):
 
     pl.seed_everything(usr_config.seed)
 
-    usr_config.optimizer.label_smoothing = trial.suggest_float('label_smoothing', 0.01, 0.2)
-    usr_config.optimizer.init_args.lr = trial.suggest_float('lr', 0.001, 0.1)
-    usr_config.optimizer.init_args.weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-4)
+    usr_config.optimizer.label_smoothing = trial.suggest_categorical('label_smoothing', [0.01, 0.05, 0.1, 0.2])
+    usr_config.optimizer.reg_bn = trial.suggest_categorical('reg_bn', [True, False])
+    usr_config.optimizer.init_args.lr = trial.suggest_categorical('lr', [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1])
+    usr_config.optimizer.init_args.weight_decay = trial.suggest_categorical('weight_decay', [1e-5, 2e-5, 3e-5, 4e-5, 5e-5, 6e-5, 7e-5, 8e-5, 9e-5, 1e-4])
     usr_config.data.init_args.batch_size = trial.suggest_categorical('batch_size', [64, 128, 256, 512])
-
+    
     model = config_parsers.parse_model(usr_config, plflow.models)
     datamodule = config_parsers.parse_datamodule(usr_config, plflow.data)
 
@@ -52,7 +53,7 @@ def pipeline(trial):
         strategy=strategy,
         callbacks=callbacks,
     )
-    
+
     return trainer.callback_metrics['test_acc'].item()
 
 

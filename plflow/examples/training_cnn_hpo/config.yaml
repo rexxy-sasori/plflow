@@ -23,6 +23,7 @@ module:
 optimizer:
   name: SGD
   label_smoothing: 0.1
+  reg_bn: false
   init_args:
     lr: 0.1
     weight_decay: 5e-5
