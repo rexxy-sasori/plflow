@@ -52,8 +52,8 @@ def pipeline(trial):
         strategy=strategy,
         callbacks=callbacks,
     )
-
-    return trainer.callback_metrics['val_acc'].item()
+    
+    return trainer.callback_metrics['test_acc'].item()
 
 
 if __name__ == '__main__':

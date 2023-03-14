@@ -54,9 +54,9 @@ class CIFARDataModule(pl.LightningDataModule):
                                            num_workers=self.num_worker)
 
     def val_dataloader(self):
-        return torch.utils.data.DataLoader(self.cifar_test, batch_size=self.batch_size, shuffle=True,
+        return torch.utils.data.DataLoader(self.cifar_test, batch_size=self.batch_size, shuffle=False,
                                            num_workers=self.num_worker, drop_last=self.drop_last)
 
     def test_dataloader(self):
-        return torch.utils.data.DataLoader(self.cifar_test, batch_size=self.batch_size, shuffle=True,
+        return torch.utils.data.DataLoader(self.cifar_test, batch_size=self.batch_size, shuffle=False,
                                            num_workers=self.num_worker, drop_last=self.drop_last)

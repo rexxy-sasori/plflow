@@ -116,7 +116,7 @@ def parse_logging(logger_cls=CSVLogger, usr_config=None, use_time_code=False, na
                 return f"{timecode}" if usr_time_code else ret
 
     logger_name = _parse_name(usr_config, use_time_code, name)
-    log_directory = usr_config.log_directory if save_dir is None else save_dir
+    log_directory = usr_config.trainer.init_args.log_directory if save_dir is None else save_dir
 
     logger = logger_cls(
         save_dir=log_directory,
@@ -132,7 +132,7 @@ def parse_callbacks(logger, usr_config, callbacks_modules, persist_ckpt=True):
         LearningRateMonitor(logging_interval='step')
     ]
 
-    for idx in range(len(usr_config.trainer.callbacks)):
+    for idx in range(len(usr_config.trainer.init_args.callbacks)):
         callback_cls = getattr(callbacks_modules, usr_config.trainer.callbacks[idx].name)
         callback_args = usr_config.trainer.callbacks[idx].init_args.__dict__
         callbacks.append(callback_cls(**callback_args))

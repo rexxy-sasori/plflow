@@ -2,12 +2,12 @@ seed: 12341
 trainer:
   init_args:
     use_time_code: false
-    persist_ckpt: false
-    training_strategy:
-      name: SingleDeviceStrategy
-      init_args: ~
+    persist_ckpt: true
+    log_directory: '/nvme/liyuanchun/rgeng'
+    callbacks: ~
+    training_strategy: ~
     num_epochs: 200
-    ckpt_path: none
+    ckpt_path: '/nvme/liyuanchun/dummy.ckpt'
 data:
   name: cifar100_datamodule
   init_args:
@@ -28,7 +28,7 @@ optimizer:
     weight_decay: 5e-5
     momentum: 0.9
 lr_scheduler:
-  name: MultiStep
+  name: MultiStepLR
   init_args:
     gamma: 0.1
     milestones:

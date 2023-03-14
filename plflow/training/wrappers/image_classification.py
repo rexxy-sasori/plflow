@@ -48,7 +48,7 @@ class ImageClassificationWrapper(pl.LightningModule):
         self.usr_config = usr_config
 
         self.train_acc = torchmetrics.Accuracy()
-        self.valid_acc = torchmetrics.Accuracy()
+        self.val_acc = torchmetrics.Accuracy()
         self.test_acc = torchmetrics.Accuracy()
 
         if save_usr_config:
@@ -58,7 +58,7 @@ class ImageClassificationWrapper(pl.LightningModule):
         try:
             optimizer_config = self.usr_config.optimizer
             lr_scheduler_config = self.usr_config.lr_scheduler
-
+            
             optimizer, lr_scheduler = parse_optimization_config(
                 self.module, optimizer_config, lr_scheduler_config,
                 optimlib=torch.optim, lr_schedulerlib=torch.optim.lr_scheduler
@@ -71,6 +71,7 @@ class ImageClassificationWrapper(pl.LightningModule):
 
         except AttributeError:
             # fall back to inference mode, just some random optimizers
+            
             optimizer = torch.optim.SGD(self.parameters(), lr=0)
             lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[1], gamma=0.1)
             self.label_smoothing = 0
