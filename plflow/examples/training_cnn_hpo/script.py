@@ -12,7 +12,7 @@ from plflow.config.usr_config import get_usr_config
 from plflow.training.wrappers import ImageClassificationWrapper
 
 
-def pipeline(trial):
+def pipeline(trial: optuna.trial.Trial):
     usr_config = get_usr_config(path)
 
     pl.seed_everything(usr_config.seed)
