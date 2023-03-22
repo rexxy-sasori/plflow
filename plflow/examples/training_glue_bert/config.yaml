@@ -1,0 +1,32 @@
+seed: 12341
+trainer:
+  init_args:
+    use_time_code: false
+    persist_ckpt: true
+    log_directory: '/nvme/liyuanchun/rgeng'
+    callbacks: ~
+    training_strategy: ~
+    num_epochs: 200
+    ckpt_path: '/nvme/liyuanchun/dummy.ckpt'
+data:
+  name: glue_datamodule
+  init_args:
+    model_name_or_path: &id001 'textattack/bert-base-uncased-SST-2'
+    task_name: 'sst2'
+    max_seq_length: 128
+    train_batch_size: 150
+    eval_batch_size: 150
+    num_workers: 8
+module:
+  name: ~
+  init_args:
+    model_name_or_path: *id001
+optimizer:
+  name: AdamW
+  init_args:
+    lr: 1e-5
+lr_scheduler:
+  name: get_linear_schedule_with_warmup
+  init_args:
+    num_warmup_steps: 10
+    num_training_steps: 1300
