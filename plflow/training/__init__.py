@@ -42,6 +42,8 @@ def execute(
         enable_checkpointing=enable_checkpointing
     )
 
+    assert hasattr(plmodule, 'module')
+
     try:
         debug_msg(f"loading ckpt from: {ckpt_path}", verbose)
         ckpt = torch.load(ckpt_path)
