@@ -4,10 +4,10 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-
-from plflow.config.parsers import parse_optimization_config
-from plflow.config import usr_config
 from torch import nn
+
+from plflow.config import usr_config
+from plflow.config.parsers import parse_optimization_config
 
 
 class ImageClassificationWrapper(pl.LightningModule):
@@ -58,7 +58,7 @@ class ImageClassificationWrapper(pl.LightningModule):
         try:
             optimizer_config = self.usr_config.optimizer
             lr_scheduler_config = self.usr_config.lr_scheduler
-            
+
             optimizer, lr_scheduler = parse_optimization_config(
                 self.module, optimizer_config, lr_scheduler_config,
                 optimlib=torch.optim, lr_schedulerlib=torch.optim.lr_scheduler
@@ -71,7 +71,7 @@ class ImageClassificationWrapper(pl.LightningModule):
 
         except AttributeError:
             # fall back to inference mode, just some random optimizers
-            
+
             optimizer = torch.optim.SGD(self.parameters(), lr=0)
             lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[1], gamma=0.1)
             self.label_smoothing = 0

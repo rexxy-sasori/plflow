@@ -1,11 +1,12 @@
-from typing import List
 from datetime import datetime
+from typing import List
 
 import numpy as np
 import pytorch_lightning.strategies as strategies
 from pytorch_lightning.loggers import CSVLogger
-from torch import optim
 from torch import nn
+from torch import optim
+
 import plflow.utils
 from plflow.config.usr_config import EmptyConfig
 from plflow.prune.utils import get_block_search_space_model

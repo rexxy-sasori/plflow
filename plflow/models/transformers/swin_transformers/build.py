@@ -5,11 +5,11 @@
 # Written by Ze Liu
 # --------------------------------------------------------
 
-from plflow.models.transformers.swin_transformers.swin_transformer import SwinTransformer
-from plflow.models.transformers.swin_transformers.swin_transformer_v2 import SwinTransformerV2
-from plflow.models.transformers.swin_transformers.swin_transformer_moe import SwinTransformerMoE
-from plflow.models.transformers.swin_transformers.swin_mlp import SwinMLP
 from plflow.models.transformers.swin_transformers.simmim import build_simmim
+from plflow.models.transformers.swin_transformers.swin_mlp import SwinMLP
+from plflow.models.transformers.swin_transformers.swin_transformer import SwinTransformer
+from plflow.models.transformers.swin_transformers.swin_transformer_moe import SwinTransformerMoE
+from plflow.models.transformers.swin_transformers.swin_transformer_v2 import SwinTransformerV2
 
 
 def build_model(config, is_pretrain=False):

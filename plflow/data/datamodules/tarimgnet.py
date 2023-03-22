@@ -1,12 +1,12 @@
+from typing import Callable
+
 import pytorch_lightning as pl
 import torchvision
+from pl_bolts.transforms.dataset_normalizations import imagenet_normalization
 from torch.utils.data import DataLoader
 
-from plflow.data.transforms.rgb2tensor import RGBToTensor
-
-from typing import Callable
-from pl_bolts.transforms.dataset_normalizations import imagenet_normalization
 from plflow.data.datasets.tarimgnetfolder import TarImageFolder
+from plflow.data.transforms.rgb2tensor import RGBToTensor
 
 
 class TarImgNetDataModule(pl.LightningDataModule):

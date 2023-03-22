@@ -1,13 +1,9 @@
-
-
 # --------------------------------------------------------
 # SimMIM
 # Copyright (c) 2021 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Zhenda Xie
 # --------------------------------------------------------
-
-from functools import partial
 
 import torch
 import torch.nn as nn
@@ -20,21 +16,24 @@ from plflow.models.transformers.swin_transformers.swin_transformer_v2 import Swi
 
 def norm_targets(targets, patch_size):
     assert patch_size % 2 == 1
-    
+
     targets_ = targets
     targets_count = torch.ones_like(targets)
 
     targets_square = targets ** 2.
-    
-    targets_mean = F.avg_pool2d(targets, kernel_size=patch_size, stride=1, padding=patch_size // 2, count_include_pad=False)
-    targets_square_mean = F.avg_pool2d(targets_square, kernel_size=patch_size, stride=1, padding=patch_size // 2, count_include_pad=False)
-    targets_count = F.avg_pool2d(targets_count, kernel_size=patch_size, stride=1, padding=patch_size // 2, count_include_pad=True) * (patch_size ** 2)
-    
+
+    targets_mean = F.avg_pool2d(targets, kernel_size=patch_size, stride=1, padding=patch_size // 2,
+                                count_include_pad=False)
+    targets_square_mean = F.avg_pool2d(targets_square, kernel_size=patch_size, stride=1, padding=patch_size // 2,
+                                       count_include_pad=False)
+    targets_count = F.avg_pool2d(targets_count, kernel_size=patch_size, stride=1, padding=patch_size // 2,
+                                 count_include_pad=True) * (patch_size ** 2)
+
     targets_var = (targets_square_mean - targets_mean ** 2.) * (targets_count / (targets_count - 1))
     targets_var = torch.clamp(targets_var, min=0.)
-    
+
     targets_ = (targets_ - targets_mean) / (targets_var + 1.e-6) ** 0.5
-    
+
     return targets_
 
 
@@ -135,12 +134,13 @@ class SimMIM(nn.Module):
         z = self.encoder(x, mask)
         x_rec = self.decoder(z)
 
-        mask = mask.repeat_interleave(self.patch_size, 1).repeat_interleave(self.patch_size, 2).unsqueeze(1).contiguous()
-        
+        mask = mask.repeat_interleave(self.patch_size, 1).repeat_interleave(self.patch_size, 2).unsqueeze(
+            1).contiguous()
+
         # norm target as prompted
         if self.config.NORM_TARGET.ENABLE:
             x = norm_targets(x, self.config.NORM_TARGET.PATCH_SIZE)
-        
+
         loss_recon = F.l1_loss(x, x_rec, reduction='none')
         loss = (loss_recon * mask).sum() / (mask.sum() + 1e-5) / self.in_chans
         return loss
@@ -204,6 +204,7 @@ def build_simmim(config):
     else:
         raise NotImplementedError(f"Unknown pre-train model: {model_type}")
 
-    model = SimMIM(config=config.MODEL.SIMMIM, encoder=encoder, encoder_stride=encoder_stride, in_chans=in_chans, patch_size=patch_size)
+    model = SimMIM(config=config.MODEL.SIMMIM, encoder=encoder, encoder_stride=encoder_stride, in_chans=in_chans,
+                   patch_size=patch_size)
 
     return model

@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+
 from plflow.models.submodules.masked_layer import MaskLinear, MaskConv2d
 from plflow.prune.utils import mask_conv_layer_by_magnitude, mask_fc_layer_by_magnitude
 

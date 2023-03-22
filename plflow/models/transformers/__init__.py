@@ -1,3 +1,3 @@
+from plflow.models.transformers.huggingface import *
 from plflow.models.transformers.sequence_classification import TransformerSequenceClassification
 from plflow.models.transformers.swin_transformers import SwinTransformers
-from plflow.models.transformers.huggingface import *
