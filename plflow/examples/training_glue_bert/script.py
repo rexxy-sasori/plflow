@@ -2,9 +2,9 @@ import argparse
 
 import pytorch_lightning as pl
 
-import plflow.config.parsers as configparsers
 import plflow.training
 from plflow import data as datazoo
+import plflow.config.parsers as configparsers
 from plflow.config.usr_config import get_usr_config
 from plflow.models.transformers import TransformerSequenceClassification
 from plflow.training.wrappers import GlueSequenceClassificationWrapper

@@ -5,13 +5,13 @@
 # Written by Ze Liu
 # --------------------------------------------------------
 
-import numpy as np
 import torch
-import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.distributed as dist
 import torch.utils.checkpoint as checkpoint
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
+import numpy as np
 
 try:
     from tutel import moe as tutel_moe

@@ -4,10 +4,10 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import torchmetrics
-from torch import nn
 
-from plflow.config import usr_config
 from plflow.config.parsers import parse_optimization_config
+from plflow.config import usr_config
+from torch import nn
 
 
 class ImageClassificationWrapper(pl.LightningModule):

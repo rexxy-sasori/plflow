@@ -8,7 +8,7 @@ from plflow.data.datamodules.cifar import CIFARDataModule
 from plflow.data.datamodules.glue import GLUEDataModule
 from plflow.data.datamodules.tarimgnet import TarImgNetDataModule
 from plflow.data.transforms.cifar100 import cifar100_normalization
-from plflow.data.transforms.rgb2tensor import RGBToTensor
+from plflow.data.transforms.totensor import RGBToTensor
 
 
 def cifar10_datamodule(
